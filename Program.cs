@@ -1,5 +1,4 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using Project_RMT.Core;
 using Project_RMT.Data;
 
 namespace Project_RMT
@@ -14,6 +13,8 @@ namespace Project_RMT
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
             builder.Services.AddSingleton<WeatherForecastService>();
+            builder.Services.AddTransient<SimulationEngine>();
+            builder.Services.AddTransient<RipAlgorithm>();
 
             var app = builder.Build();
 

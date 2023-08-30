@@ -3,7 +3,7 @@ using System.Net;
 
 namespace Project_RMT.Interfaces
 {
-    public interface INetworkDevices
+    public interface INetworkDevice
     {
         IPAddress IPAdress { get; set; }
         List<NetworkInterface> Ports { get; set; }
