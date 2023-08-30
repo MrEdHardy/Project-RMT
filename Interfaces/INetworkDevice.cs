@@ -6,6 +6,6 @@ namespace Project_RMT.Interfaces
     public interface INetworkDevice
     {
         IPAddress IPAdress { get; set; }
-        List<NetworkInterface> Ports { get; set; }
+        List<NetworkInterface> NetworkInterfaces { get; set; }
     }
 }

@@ -5,20 +5,20 @@ namespace Project_RMT.Core
 {
     public class SimulationEngine
     {
-        private readonly IRoutingAlgorithm _routingalgorithm;
+        private readonly IRoutingAlgorithm routingalgorithm;
 
-        public List<INetworkDevice>? devices { get; set; } = new List<INetworkDevice>();
+        public List<INetworkDevice>? Devices { get; set; } = new List<INetworkDevice>();
 
         public SimulationEngine(IRoutingAlgorithm routingalgorithm)
         {
-            this._routingalgorithm = routingalgorithm;
+            this.routingalgorithm = routingalgorithm;
         }
 
         public void UpdateRoutingtables()
         {
-            if (devices is not null && devices.Where(device => device is Router) is List<Router> router)
+            if (Devices is not null && Devices.Where(device => device is Router) is List<Router> router)
             {
-                this._routingalgorithm.UpdateRoutingTables(router);
+                this.routingalgorithm.UpdateRoutingTables(router);
             }
         }
     }
