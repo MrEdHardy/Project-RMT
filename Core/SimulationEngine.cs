@@ -7,7 +7,7 @@ namespace Project_RMT.Core
     {
         private readonly IRoutingAlgorithm routingalgorithm;
 
-        public List<INetworkDevice>? Devices { get; set; } = new List<INetworkDevice>();
+        public List<INetworkDevice?> Devices { get; set; } = new List<INetworkDevice?>();
 
         public SimulationEngine(IRoutingAlgorithm routingalgorithm)
         {
@@ -16,7 +16,7 @@ namespace Project_RMT.Core
 
         public void UpdateRoutingtables()
         {
-            if (Devices is not null && Devices.Where(device => device is Router) is List<Router> router)
+            if (Devices.Where(device => device is Router) is List<Router> router)
             {
                 this.routingalgorithm.UpdateRoutingTables(router);
             }
