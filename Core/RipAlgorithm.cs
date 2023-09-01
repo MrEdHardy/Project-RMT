@@ -1,6 +1,5 @@
 ﻿using Project_RMT.Interfaces;
 using Project_RMT.Models;
-using System.Net;
 
 namespace Project_RMT.Core
 {
@@ -12,27 +11,30 @@ namespace Project_RMT.Core
             {
                 foreach (var networkInterface in router.NetworkInterfaces)
                 {
-                    if (networkInterface.ConnectedRouter is Router connectedRouter)
+                    if (networkInterface.ConnectedNetworkDevice is Router connectedRouter)
                     {
                         foreach (var incomingEntry in router.RoutingTable)
                         {
-                            var existingEntry = connectedRouter.RoutingTable.Find(e => e.Network == incomingEntry.Network);
+                            var existingEntry = connectedRouter.RoutingTable.FirstOrDefault(e => e.Network == incomingEntry.Network);
 
                             if (existingEntry == null)
                             {
                                 connectedRouter.RoutingTable.Add(new RoutingEntry
                                 {
-                                    IPAddress = entry.IPAddress,
-                                    NextHop = neighboringRouter.RoutingTable[0].NextHop,
-                                    Metric = entry.Metric + 1
+                                    Network = incomingEntry.Network,
+                                    NextHop = router.IPAdress,
+                                    Metric = incomingEntry.Metric + 1,
+                                    NetworkInterface = connectedRouter.NetworkInterfaces.First(r => r.ConnectedNetworkDevice?.IPAdress == router.IPAdress),
                                 });
                             }
                             else
                             {
-                                if (entry.Metric + 1 < existingEntry.Metric)
+                                if (incomingEntry.Metric + 1 < existingEntry.Metric)
                                 {
-                                    existingEntry.NextHop = neighboringRouter.RoutingTable[0].NextHop;
-                                    existingEntry.Metric = entry.Metric + 1;
+                                    existingEntry.NextHop = router.IPAdress;
+                                    existingEntry.Metric = incomingEntry.Metric + 1;
+                                    existingEntry.Network = router.IPAdress;
+                                    existingEntry.NetworkInterface = connectedRouter.NetworkInterfaces.First(r => r.ConnectedNetworkDevice?.IPAdress == router.IPAdress);
                                 }
                             }
                         }

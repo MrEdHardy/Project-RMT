@@ -6,6 +6,6 @@ namespace Project_RMT.Models
     {
         public required string Name { get; set; }
 
-        public INetworkDevice? ConnectedRouter { get; set; }
+        public INetworkDevice? ConnectedNetworkDevice { get; set; }
     }
 }
