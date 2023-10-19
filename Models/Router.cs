@@ -5,6 +5,7 @@ namespace Project_RMT.Models
 {
     public record Router : INetworkDevice
     {
+        public required short RouterId { get; set; } 
         public required IPAddress IPAdress { get; set; }
         public required List<NetworkInterface> NetworkInterfaces { get; set; }
 

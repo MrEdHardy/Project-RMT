@@ -2,7 +2,7 @@
 
 namespace Project_RMT.Models
 {
-    public class RoutingEntry
+    public record RoutingEntry
     {
         public required IPAddress Network { get; set; }
 

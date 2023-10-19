@@ -16,9 +16,9 @@ namespace Project_RMT.Core
 
         public void UpdateRoutingtables()
         {
-            if (Devices.Where(device => device is Router) is List<Router> router)
+            if (Devices.Where(device => device is Router) is List<Router> routers)
             {
-                this.routingalgorithm.UpdateRoutingTables(router);
+                this.routingalgorithm.UpdateRoutingTables(routers);
             }
         }
     }
