@@ -1,5 +1,6 @@
 using Project_RMT.Core;
 using Project_RMT.Data;
+using Project_RMT.Interfaces;
 
 namespace Project_RMT
 {
@@ -14,7 +15,7 @@ namespace Project_RMT
             builder.Services.AddServerSideBlazor();
             builder.Services.AddSingleton<WeatherForecastService>();
             builder.Services.AddTransient<SimulationEngine>();
-            builder.Services.AddTransient<RipAlgorithm>();
+            builder.Services.AddTransient<IRoutingAlgorithm, RipAlgorithm>();
 
             var app = builder.Build();
 
