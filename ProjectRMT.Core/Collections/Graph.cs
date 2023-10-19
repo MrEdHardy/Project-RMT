@@ -2,24 +2,29 @@
 
 namespace Project_RMT.Collections
 {
-    public class Tree<T>
+    public class Graph<T>
         where T : notnull
     {
-        public TreeNode<T> Root { get; set; }
+        public ICollection<Node<T>> Nodes { get; set; }
 
-        public Tree(T rootValue)
+        public Graph()
         {
-            Root = new TreeNode<T>(rootValue);
+            this.Nodes = new List<Node<T>>();
         }
 
-        public Dictionary<TreeNode<T>, int> FindShortestPathFromRoot()
+        public Graph(ICollection<Node<T>> nodes)
         {
-            var distances = new Dictionary<TreeNode<T>, int>();
-            var visited = new HashSet<TreeNode<T>>();
-            var priorityQueue = new PriorityQueue<(TreeNode<T> node, int distance), int>(new DistanceComparer());
+            this.Nodes = nodes;
+        }
 
-            distances[this.Root] = 0;
-            priorityQueue.Enqueue((this.Root, 0), 0);
+        public Dictionary<Node<T>, int> FindShortestPath(Node<T> source)
+        {
+            var distances = new Dictionary<Node<T>, int>();
+            var visited = new HashSet<Node<T>>();
+            var priorityQueue = new PriorityQueue<(Node<T> node, int distance), int>(new DistanceComparer());
+
+            distances[source] = 0;
+            priorityQueue.Enqueue((source, 0), 0);
 
             while (priorityQueue.Count > 0)
             {

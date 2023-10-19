@@ -4,7 +4,7 @@ namespace Project_RMT.Models
 {
     public record RoutingEntry
     {
-        public required IPAddress Network { get; set; }
+        public required IPAddress TargetNetwork { get; set; }
 
         public IPAddress? NextHop { get; set; }
 

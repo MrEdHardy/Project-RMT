@@ -5,7 +5,7 @@ namespace Project_RMT.Core
 {
     public class RipAlgorithm : IRoutingAlgorithm
     {
-        public void UpdateRoutingTables(IEnumerable<Router> routers)
+        public void UpdateRoutingTables(ref IEnumerable<Router> routers)
         {
             foreach (var router in routers)
             {
@@ -15,13 +15,13 @@ namespace Project_RMT.Core
                     {
                         foreach (var incomingEntry in router.RoutingTable)
                         {
-                            var existingEntry = connectedRouter.RoutingTable.FirstOrDefault(e => e.Network == incomingEntry.Network);
+                            var existingEntry = connectedRouter.RoutingTable.FirstOrDefault(e => e.TargetNetwork == incomingEntry.TargetNetwork);
 
                             if (existingEntry == null)
                             {
                                 connectedRouter.RoutingTable.Add(new RoutingEntry
                                 {
-                                    Network = incomingEntry.Network,
+                                    TargetNetwork = incomingEntry.TargetNetwork,
                                     NextHop = router.IPAdress,
                                     Metric = incomingEntry.Metric + 1,
                                     NetworkInterface = connectedRouter.NetworkInterfaces.First(r => r.ConnectedNetworkDevice?.IPAdress == router.IPAdress),
@@ -33,7 +33,7 @@ namespace Project_RMT.Core
                                 {
                                     existingEntry.NextHop = router.IPAdress;
                                     existingEntry.Metric = incomingEntry.Metric + 1;
-                                    existingEntry.Network = router.IPAdress;
+                                    existingEntry.TargetNetwork = router.IPAdress;
                                     existingEntry.NetworkInterface = connectedRouter.NetworkInterfaces.First(r => r.ConnectedNetworkDevice?.IPAdress == router.IPAdress);
                                 }
                             }
