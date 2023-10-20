@@ -1,4 +1,5 @@
 ﻿using Project_RMT.Collections.Internal;
+using System.Xml.Linq;
 
 namespace Project_RMT.Collections
 {
@@ -17,10 +18,11 @@ namespace Project_RMT.Collections
             this.Nodes = nodes;
         }
 
-        public Dictionary<Node<T>, int> FindShortestPath(Node<T> source)
+        public Dictionary<Node<T>, List<Node<T>>> FindShortestPath(Node<T> source)
         {
             var distances = new Dictionary<Node<T>, int>();
             var visited = new HashSet<Node<T>>();
+            var predecessors = new Dictionary<Node<T>, Node<T>>();
             var priorityQueue = new PriorityQueue<(Node<T> node, int distance), int>(new DistanceComparer());
 
             distances[source] = 0;
@@ -39,12 +41,25 @@ namespace Project_RMT.Collections
                     if (!distances.ContainsKey(targetNode) || newDistance < distances[targetNode])
                     {
                         distances[targetNode] = newDistance;
+                        predecessors[targetNode] = currentNode;
                         priorityQueue.Enqueue((targetNode, newDistance), newDistance);
                     }
                 }
             }
 
-            return distances;
+            var paths = new Dictionary<Node<T>, List<Node<T>>>();
+            foreach (var node in distances.Keys)
+            {
+                var path = new List<Node<T>>();
+                for (var current = node; current != null; current = predecessors.GetValueOrDefault(current))
+                {
+                    path.Add(current);
+                }
+                path.Reverse();
+                paths[node] = path;
+            }
+
+            return paths;
         }
     }
 }
