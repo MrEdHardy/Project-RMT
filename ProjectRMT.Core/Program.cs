@@ -1,5 +1,6 @@
 using Project_RMT.Core;
 using Project_RMT.Interfaces;
+using MudBlazor.Services;
 
 namespace Project_RMT
 {
@@ -14,6 +15,7 @@ namespace Project_RMT
             builder.Services.AddServerSideBlazor();
             builder.Services.AddTransient<SimulationEngine>();
             builder.Services.AddTransient<IRoutingAlgorithm, RipAlgorithm>();
+            builder.Services.AddMudServices();
 
             var app = builder.Build();
 

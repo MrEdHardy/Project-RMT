@@ -1,0 +1,37 @@
+﻿@using System.Drawing;
+@using MudBlazor;
+@using Router = Project_RMT.Models.Router;
+@using System.Net;
+
+<MudForm @ref="form">
+    <MudDialog>
+        <DialogContent>
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudTextField T="IPAddress" Label="IPadress" @ref="pwField1" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField T="Point" Label="Coordinates" @ref="pwField2" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField T="Point" Label="Coordinates" @ref="pwField2" />
+                </MudItem>
+            </MudGrid>
+            <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" Class="ml-auto">Register</MudButton>
+        </DialogContent>
+    </MudDialog>
+</MudForm>
+
+@code {
+    [Parameter] public List<Router> NetworkInterfaces { get; set; }
+    public Router NewRouter { get; set; }
+    MudTextField<IPAddress> pwField1;
+    MudTextField<Point> pwField2;
+    MudForm form;
+
+    public void save()
+    {
+
+    }
+
+}

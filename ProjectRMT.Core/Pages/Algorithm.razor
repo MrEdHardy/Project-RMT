@@ -1,0 +1,70 @@
+﻿@page "/algorithm"
+@using MudBlazor;
+@using Project_RMT.Core;
+@using Project_RMT.Interfaces;
+@using Router = Project_RMT.Models.Router;
+@using System.Drawing;
+@inject SimulationEngine SimulationEngine
+@inject IDialogService DialogService
+<style>
+    .grid{
+        grid-gap: 5px;
+        justify-items: stretch;
+        height: 50vw;
+        width: 50vw;
+    }
+    .grid-cell{
+        border: solid grey 1px;
+        justify-self: stretch;
+    }
+    .modal{
+        background-color: white;
+    }
+    
+</style>
+<PageTitle>Algorithm Visulization</PageTitle>
+
+<h1>Simulation Page</h1>
+
+<MudGrid Class="grid">
+    <MudButton @onclick="() => InvokeModal()" FullWidth=true >New Router</MudButton>
+    @for (int row = 0; row < 20; row++)
+    {
+        @for (int col = 0; col < 20; col++)
+        {
+            <MudItem Class="grid-cell">
+            </MudItem>
+        }
+    }
+</MudGrid>
+
+
+@code {
+    public List<Router> router = new List<Router>();
+    public string buttonText = "Simulation Starten";
+
+    protected override async Task OnInitializedAsync()
+    {
+        router.Add(new Router()
+        {
+            Id = 1,
+            Clients = new(),
+            IPAdress = new (2346786823),
+            NetworkInterfaces = new(),
+            RoutingTable = new List<Models.RoutingEntry>()
+        });
+    }
+
+    private void Rout()
+    {
+        SimulationEngine.UpdateRoutingtables();
+    }
+
+    private async Task InvokeModal()
+    {
+        var parameters = new DialogParameters<Point>();
+        parameters.Add("NetworkInterfaces", router);
+        var options = new DialogOptions { CloseButton = true, ClassBackground = "modal" };
+        var dialog = DialogService.Show<AddRouterModal>("AddRouter" ,parameters, options);
+    }
+}
