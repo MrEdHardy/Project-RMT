@@ -1,5 +1,4 @@
 using Project_RMT.Core;
-using Project_RMT.Data;
 using Project_RMT.Interfaces;
 
 namespace Project_RMT
@@ -13,7 +12,6 @@ namespace Project_RMT
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
-            builder.Services.AddSingleton<WeatherForecastService>();
             builder.Services.AddTransient<SimulationEngine>();
             builder.Services.AddTransient<IRoutingAlgorithm, RipAlgorithm>();
 
