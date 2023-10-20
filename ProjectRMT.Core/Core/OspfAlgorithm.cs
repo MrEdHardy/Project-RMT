@@ -49,6 +49,24 @@ namespace Project_RMT.Core
                     var index = ((List<Node<INetworkDevice>>)this.networkgraph.Nodes).FindIndex(nodes => nodes.Value.Id == router.Id);
                     var shortestPaths = this.networkgraph.FindShortestPath(((List<Node<INetworkDevice>>)this.networkgraph.Nodes)[index]);
 
+                    foreach (var path in shortestPaths)
+                    {
+                        if (!router.NetworkInterfaces.Any(c => c.ConnectedNetworkDevice?.Id == path.Key.Value.Id))
+                        {
+                            foreach (var item in shortestPaths)
+                            {
+                                
+                            }
+
+                            router.RoutingTable.Add(new RoutingEntry 
+                            { 
+                                Metric = 5,
+                                TargetNetwork = path.Key.Value.IPAdress,
+                                NetworkInterface = router.NetworkInterfaces.First()
+                            });
+                        }
+                    }
+
                     // Morgen mehr!
 
                     //foreach (var path in shortestPaths)
