@@ -1,4 +1,5 @@
 ﻿using Project_RMT.Interfaces;
+using System.Drawing;
 using System.Net;
 
 namespace Project_RMT.Models
@@ -12,5 +13,6 @@ namespace Project_RMT.Models
 
         public required List<RoutingEntry> RoutingTable { get; set; }
         public required short Id { get; set; }
+        public Point? Coordinates { get; set; }
     }
 }
