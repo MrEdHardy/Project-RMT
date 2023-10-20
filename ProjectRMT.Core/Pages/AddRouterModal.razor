@@ -22,6 +22,7 @@
     </MudDialog>
 </MudForm>
 
+
 @code {
     [Parameter] public List<Router> NetworkInterfaces { get; set; }
     public Router NewRouter { get; set; }
@@ -29,9 +30,16 @@
     MudTextField<Point> pwField2;
     MudForm form;
 
-    public void save()
-    {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
     }
 
+    private void save()
+    {
+        MudDialog.Close(DialogResult.Ok(NewRouter));
+    }
 }

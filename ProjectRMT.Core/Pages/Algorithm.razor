@@ -66,5 +66,14 @@
         parameters.Add("NetworkInterfaces", router);
         var options = new DialogOptions { CloseButton = true, ClassBackground = "modal" };
         var dialog = DialogService.Show<AddRouterModal>("AddRouter" ,parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            if (result.Data is Router newRouter)
+            {
+                router.Add(newRouter);
+            } 
+        }
     }
 }
