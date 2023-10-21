@@ -15,6 +15,7 @@ namespace Project_RMT
             builder.Services.AddServerSideBlazor();
             builder.Services.AddTransient<SimulationEngine>();
             builder.Services.AddTransient<IRoutingAlgorithm, RipAlgorithm>();
+            builder.Services.AddTransient<IRoutingAlgorithm, OspfAlgorithm>();
             builder.Services.AddMudServices();
 
             var app = builder.Build();

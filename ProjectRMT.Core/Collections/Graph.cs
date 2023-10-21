@@ -18,7 +18,7 @@ namespace Project_RMT.Collections
             this.Nodes = nodes;
         }
 
-        public Dictionary<Node<T>, List<Node<T>>> FindShortestPath(Node<T> source)
+        public List<(Node<T> TargetNode, List<Node<T>> Path, int TotalCost)> FindShortestPath(Node<T> source)
         {
             var distances = new Dictionary<Node<T>, int>();
             var visited = new HashSet<Node<T>>();
@@ -47,7 +47,7 @@ namespace Project_RMT.Collections
                 }
             }
 
-            var paths = new Dictionary<Node<T>, List<Node<T>>>();
+            var result = new List<(Node<T> TargetNode, List<Node<T>> Path, int TotalCost)>();
             foreach (var node in distances.Keys)
             {
                 var path = new List<Node<T>>();
@@ -56,10 +56,10 @@ namespace Project_RMT.Collections
                     path.Add(current);
                 }
                 path.Reverse();
-                paths[node] = path;
+                result.Add((node, path, distances[node]));
             }
 
-            return paths;
+            return result;
         }
     }
 }

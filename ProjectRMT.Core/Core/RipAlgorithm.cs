@@ -15,13 +15,13 @@ namespace Project_RMT.Core
                     {
                         foreach (var incomingEntry in router.RoutingTable)
                         {
-                            var existingEntry = connectedRouter.RoutingTable.FirstOrDefault(e => e.TargetNetwork == incomingEntry.TargetNetwork);
+                            var existingEntry = connectedRouter.RoutingTable.FirstOrDefault(e => e.TargetIPAdress == incomingEntry.TargetIPAdress);
 
                             if (existingEntry == null)
                             {
                                 connectedRouter.RoutingTable.Add(new RoutingEntry
                                 {
-                                    TargetNetwork = incomingEntry.TargetNetwork,
+                                    TargetIPAdress = incomingEntry.TargetIPAdress,
                                     NextHop = router.IPAdress,
                                     Metric = incomingEntry.Metric + 1,
                                     NetworkInterface = connectedRouter.NetworkInterfaces.First(r => r.ConnectedNetworkDevice?.IPAdress == router.IPAdress),
@@ -33,7 +33,7 @@ namespace Project_RMT.Core
                                 {
                                     existingEntry.NextHop = router.IPAdress;
                                     existingEntry.Metric = incomingEntry.Metric + 1;
-                                    existingEntry.TargetNetwork = router.IPAdress;
+                                    existingEntry.TargetIPAdress = router.IPAdress;
                                     existingEntry.NetworkInterface = connectedRouter.NetworkInterfaces.First(r => r.ConnectedNetworkDevice?.IPAdress == router.IPAdress);
                                 }
                             }

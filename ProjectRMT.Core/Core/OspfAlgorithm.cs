@@ -13,32 +13,34 @@ namespace Project_RMT.Core
         {
             if (!this.GraphInitialized)
             {
-                var nodeList = new List<Node<INetworkDevice>>();
+                var nodeDictionary = new Dictionary<INetworkDevice, Node<INetworkDevice>>();
 
                 foreach (var router in routers)
                 {
-                    var routerNode = new Node<INetworkDevice>(router);
+                    if (!nodeDictionary.TryGetValue(router, out var routerNode))
+                    {
+                        routerNode = new Node<INetworkDevice>(router);
+                        nodeDictionary[router] = routerNode;
+                    }
 
                     foreach (var connectedInterface in router.NetworkInterfaces)
                     {
                         if (connectedInterface.ConnectedNetworkDevice is not null)
                         {
-                            var connectedDeviceNode = new Node<INetworkDevice>(connectedInterface.ConnectedNetworkDevice);
+                            if (!nodeDictionary.TryGetValue(connectedInterface.ConnectedNetworkDevice, out var connectedDeviceNode))
+                            {
+                                connectedDeviceNode = new Node<INetworkDevice>(connectedInterface.ConnectedNetworkDevice);
+                                nodeDictionary[connectedInterface.ConnectedNetworkDevice] = connectedDeviceNode;
+                            }
+
                             var metric = router.RoutingTable.Single(entry => connectedInterface.ConnectedNetworkDevice.Id == entry.NetworkInterface.ConnectedNetworkDevice?.Id).Metric;
-                                
+
                             routerNode.Edges.Add(new Edge<INetworkDevice>(connectedDeviceNode, metric));
                             connectedDeviceNode.Edges.Add(new Edge<INetworkDevice>(routerNode, metric));
-
-                            if (!nodeList.Contains(connectedDeviceNode))
-                            {
-                                nodeList.Add(connectedDeviceNode);
-                            }
                         }
                     }
-                    nodeList.Add(routerNode);
                 }
-
-                this.networkgraph = new Graph<INetworkDevice>(nodeList);
+                this.networkgraph = new Graph<INetworkDevice>(nodeDictionary.Values.ToList());
                 this.GraphInitialized = true;
             }
 
@@ -46,33 +48,25 @@ namespace Project_RMT.Core
             {
                 if (this.networkgraph is not null)
                 {
-                    var index = ((List<Node<INetworkDevice>>)this.networkgraph.Nodes).FindIndex(nodes => nodes.Value.Id == router.Id);
-                    var shortestPaths = this.networkgraph.FindShortestPath(((List<Node<INetworkDevice>>)this.networkgraph.Nodes)[index]);
+                    var shortestPaths = this.networkgraph.FindShortestPath(this.networkgraph.Nodes.Single(n => n.Value.Id == router.Id));
 
                     foreach (var path in shortestPaths)
                     {
-                        if (!router.NetworkInterfaces.Any(c => c.ConnectedNetworkDevice?.Id == path.Key.Value.Id))
+                        if (path.TargetNode.Value.Id != router.Id 
+                            && !router.NetworkInterfaces.Any(c => c.ConnectedNetworkDevice?.Id == path.TargetNode.Value.Id) 
+                            && !router.RoutingTable.Any(re => re.TargetIPAdress == path.TargetNode.Value.IPAdress))
                         {
-                            foreach (var item in shortestPaths)
-                            {
-                                
-                            }
-
+                            var nextHop = path.Path.ElementAt(path.Path.FindIndex(n => n.Value.Id == router.Id) + 1);
                             router.RoutingTable.Add(new RoutingEntry 
                             { 
-                                Metric = 5,
-                                TargetNetwork = path.Key.Value.IPAdress,
-                                NetworkInterface = router.NetworkInterfaces.First()
+                                Metric = path.TotalCost,
+                                TargetIPAdress = path.TargetNode.Value.IPAdress,
+                                NetworkInterface = router.NetworkInterfaces.Single(n => n.ConnectedNetworkDevice?.Id == nextHop.Value.Id),
+                                NextHop = nextHop.Value.IPAdress,
+                                IsActive = true,
                             });
                         }
                     }
-
-                    // Morgen mehr!
-
-                    //foreach (var path in shortestPaths)
-                    //{
-                    //    if ()
-                    //}
                 }
             }
         }
