@@ -39,41 +39,41 @@ namespace Project_RMT.UnitTests.Collections.Dijkstra
             {
                 Id = 1,
                 IPAdress = new System.Net.IPAddress(new byte[] { 192, 168, 0, 0 }),
-                Clients = new List<Client>(),
-                NetworkInterfaces = new List<NetworkInterface>(),
-                RoutingTable = new List<RoutingEntry>()
+                Clients = new(),
+                NetworkInterfaces = new(),
+                RoutingTable = new()
             };
 
             var router2 = new Router
             {
                 Id = 2,
                 IPAdress = new System.Net.IPAddress(new byte[] { 192, 168, 0, 1 }),
-                Clients = new List<Client>(),
-                NetworkInterfaces = new List<NetworkInterface>(),
-                RoutingTable = new List<RoutingEntry>()
+                Clients = new(),
+                NetworkInterfaces = new(),
+                RoutingTable = new()
             };
 
             var router3 = new Router
             {
                 Id = 5,
                 IPAdress = new System.Net.IPAddress(new byte[] { 192, 168, 0, 2 }),
-                Clients = new List<Client>(),
-                NetworkInterfaces = new List<NetworkInterface>(),
-                RoutingTable = new List<RoutingEntry>()
+                Clients = new(),
+                NetworkInterfaces = new(),
+                RoutingTable = new()
             };
 
             var client1 = new Client
             {
                 Id = 3,
                 IPAdress = new System.Net.IPAddress(new byte[] { 192, 168, 1, 0 }),
-                NetworkInterfaces = new List<NetworkInterface>()
+                NetworkInterfaces = new()
             };
 
             var client2 = new Client
             {
                 Id = 4,
                 IPAdress = new System.Net.IPAddress(new byte[] { 192, 168, 1, 1 }),
-                NetworkInterfaces = new List<NetworkInterface>()
+                NetworkInterfaces = new()
             };
 
             var router1Client1Connection = new NetworkInterface
@@ -205,16 +205,22 @@ namespace Project_RMT.UnitTests.Collections.Dijkstra
             IEnumerable<Router> routerList = new List<Router>();
             ((List<Router>)routerList).AddRange(new Router[] { router1, router2, router3 });
 
-            var countBefore = router1.RoutingTable.Count;
+            var countBeforeRouter1 = router1.RoutingTable.Count;
+            var countBeforeRouter3 = router3.RoutingTable.Count;
+
             Assert.DoesNotContain(router1.RoutingTable, re => re.TargetIPAdress == client2.IPAdress);
 
             var testOSPFAlgo = new OspfAlgorithm();
             testOSPFAlgo.UpdateRoutingTables(ref routerList);
 
-            var countAfter = router1.RoutingTable.Count;
+            var countAfterRouter1 = router1.RoutingTable.Count;
+            var countAfterRouter3 = router3.RoutingTable.Count;
 
-            Assert.True(countBefore < countAfter);
+            Assert.True(countBeforeRouter1 < countAfterRouter1);
+            Assert.True(countBeforeRouter3 < countAfterRouter3);
             Assert.Contains(router1.RoutingTable, re => re.TargetIPAdress == client2.IPAdress);
+            Assert.Contains(router3.RoutingTable, re => re.TargetIPAdress == client1.IPAdress);
+            Assert.Contains(router3.RoutingTable, re => re.TargetIPAdress == client2.IPAdress);
         }
     }
 }

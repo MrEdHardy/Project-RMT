@@ -39,23 +39,27 @@
 </MudGrid>
 
 
-@code {
-    public List<Router> router = new List<Router>();
+    @code {
+    public List<Router> routers = new List<Router>();
     public string buttonText = "Simulation Starten";
+    short networkDeviceCounter = 1;
 
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
-        router.Add(new Router()
+        routers.Add(new Router()
         {
-            Id = 1,
+            Id = networkDeviceCounter,
             Clients = new(),
             IPAdress = new (2346786823),
             NetworkInterfaces = new(),
-            RoutingTable = new List<Models.RoutingEntry>()
+            RoutingTable = new()
         });
+        networkDeviceCounter++;
+
+        return Task.CompletedTask;
     }
 
-    private void Rout()
+    private void StartRouting()
     {
         SimulationEngine.UpdateRoutingtables();
     }
@@ -63,16 +67,17 @@
     private async Task InvokeModal()
     {
         var parameters = new DialogParameters<Point>();
-        parameters.Add("NetworkInterfaces", router);
+        parameters.Add("NetworkInterfaces", routers);
         var options = new DialogOptions { CloseButton = true, ClassBackground = "modal" };
-        var dialog = DialogService.Show<AddRouterModal>("AddRouter" ,parameters, options);
+        var dialog = DialogService.Show<AddRouterModal>("AddRouter", parameters, options);
         var result = await dialog.Result;
 
         if (!result.Canceled)
         {
             if (result.Data is Router newRouter)
             {
-                router.Add(newRouter);
+                routers.Add(newRouter);
+                SimulationEngine.Devices.Add(newRouter);
             } 
         }
     }

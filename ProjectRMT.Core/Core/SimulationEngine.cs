@@ -7,7 +7,7 @@ namespace Project_RMT.Core
     {
         private readonly IRoutingAlgorithm routingalgorithm;
 
-        public List<INetworkDevice?> Devices { get; set; } = new List<INetworkDevice?>();
+        public ICollection<INetworkDevice?> Devices { get; set; } = new List<INetworkDevice?>();
 
         public SimulationEngine(IRoutingAlgorithm routingalgorithm)
         {
