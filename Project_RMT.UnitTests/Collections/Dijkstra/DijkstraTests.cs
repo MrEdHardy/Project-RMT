@@ -37,7 +37,7 @@ namespace Project_RMT.UnitTests.Collections.Dijkstra
         {
             var router1 = new Router
             {
-                Id = 1,
+                Id = Guid.NewGuid(),
                 IPAdress = new System.Net.IPAddress(new byte[] { 192, 168, 0, 0 }),
                 Clients = new(),
                 NetworkInterfaces = new(),
@@ -46,7 +46,7 @@ namespace Project_RMT.UnitTests.Collections.Dijkstra
 
             var router2 = new Router
             {
-                Id = 2,
+                Id = Guid.NewGuid(),
                 IPAdress = new System.Net.IPAddress(new byte[] { 192, 168, 0, 1 }),
                 Clients = new(),
                 NetworkInterfaces = new(),
@@ -55,7 +55,7 @@ namespace Project_RMT.UnitTests.Collections.Dijkstra
 
             var router3 = new Router
             {
-                Id = 5,
+                Id = Guid.NewGuid(),
                 IPAdress = new System.Net.IPAddress(new byte[] { 192, 168, 0, 2 }),
                 Clients = new(),
                 NetworkInterfaces = new(),
@@ -64,14 +64,14 @@ namespace Project_RMT.UnitTests.Collections.Dijkstra
 
             var client1 = new Client
             {
-                Id = 3,
+                Id = Guid.NewGuid(),
                 IPAdress = new System.Net.IPAddress(new byte[] { 192, 168, 1, 0 }),
                 NetworkInterfaces = new()
             };
 
             var client2 = new Client
             {
-                Id = 4,
+                Id = Guid.NewGuid(),
                 IPAdress = new System.Net.IPAddress(new byte[] { 192, 168, 1, 1 }),
                 NetworkInterfaces = new()
             };

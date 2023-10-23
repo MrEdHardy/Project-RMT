@@ -5,7 +5,7 @@ namespace Project_RMT.Interfaces
 {
     public interface INetworkDevice
     {
-        short Id { get; set; }
+        Guid Id { get; set; }
         IPAddress IPAdress { get; set; }
         List<NetworkInterface> NetworkInterfaces { get; set; }
     }
