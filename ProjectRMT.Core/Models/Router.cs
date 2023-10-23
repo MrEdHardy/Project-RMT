@@ -12,7 +12,7 @@ namespace Project_RMT.Models
         public required List<Client> Clients { get; set; }
 
         public required List<RoutingEntry> RoutingTable { get; set; }
-        public required short Id { get; set; }
+        public required Guid Id { get; set; }
         public Point? Coordinates { get; set; }
     }
 }
