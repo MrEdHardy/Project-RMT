@@ -1,5 +1,6 @@
 ﻿@using System.Drawing;
 @using MudBlazor;
+@using Project_RMT.Interfaces;
 @using Project_RMT.Models;
 @using Router = Project_RMT.Models.Router;
 @using System.Net;
@@ -8,34 +9,40 @@
     <MudDialog>
         <DialogContent>
             <MudGrid>
-                <MudItem xs="12" md="6">
-                    <MudTextField T="IPAddress" Label="IPadress" @ref="ipField" />
+                <MudItem xs="12" md="12">
+                    <MudTextField T="string" Label="IPadress" @ref="ipField" />
                 </MudItem>
                 <MudItem xs="12" md="6">
-                    <MudTextField T="Point" Label="Coordinates" @ref="coordinateField" />
+                    <MudTextField T="int" Label="X-Coordinates" @ref="xcoordinateField"/>
                 </MudItem>
-                <MudSelect T="NetworkInterface" Label="NetworkInterfaces" MultiSelection="true" @bind-SelectedValues="options">
-                    @foreach (var networkInterface in NetworkInterfaces)
-                    {
-                        <MudSelectItem T="NetworkInterface" Value="@networkInterface">@networkInterface.Name</MudSelectItem>
-                    }
-                </MudSelect>
+                <MudItem xs="12" md="6">
+                    <MudTextField T="int" Label="Y-Coordinates" @ref="ycoordinateField"/>
+                </MudItem>
+                @if (NetworkInterfaces is not null && NetworkInterfaces.Count != 0)
+                {
+                    <MudSelect T="Router" Label="NetworkInterfaces" MultiSelection="true" @bind-SelectedValues="options">
+                        @foreach (var networkInterface in NetworkInterfaces)
+                        {
+                            <MudSelectItem Value="@networkInterface">@networkInterface.IPAdress.ToString()</MudSelectItem>
+                        }
+                    </MudSelect>
+                }
             </MudGrid>
-            <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" Class="ml-auto">Register</MudButton>
+            <MudButton @onclick="save" Variant="Variant.Filled" Color="MudBlazor.Color.Primary" Class="ml-auto">Register</MudButton>
         </DialogContent>
     </MudDialog>
 </MudForm>
 
 
 @code {
-    [Parameter] public List<NetworkInterface> NetworkInterfaces { get; set; }
-    MudTextField<IPAddress> ipField;
-    MudTextField<Point> coordinateField;
+    [Parameter] public List<Router> NetworkInterfaces { get; set; }
+    MudTextField<string> ipField;
+    MudTextField<int> xcoordinateField;
+    MudTextField<int> ycoordinateField;
     MudForm form;
-    private IEnumerable<NetworkInterface> options { get; set; } = new HashSet<NetworkInterface>();
+    private IEnumerable<Router> options { get; set; } = new HashSet<Router>();
 
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-
 
     private void Cancel()
     {
@@ -45,14 +52,19 @@
     private void save()
     {
         var newRouter = new Router()
-            {
-                Id = 1,
-                Clients = new List<Models.Client>(),
-                IPAdress = ipField.Value,
-                NetworkInterfaces = options.ToList(),
-                RoutingTable = new(),
-                Coordinates = coordinateField.Value
-            };
+        {
+            Id = Guid.NewGuid(),
+            Clients = new List<Models.Client>(),
+            IPAdress = IPAddress.Parse(ipField.Value),
+            NetworkInterfaces = new List<NetworkInterface>(),
+            RoutingTable = new(),
+            Coordinates = new Point(xcoordinateField.Value, ycoordinateField.Value)
+        };
+
+        foreach (var item in options)
+        {
+            newRouter.NetworkInterfaces.Add(new NetworkInterface() { Name = item.IPAdress.ToString(), ConnectedNetworkDevice = item });
+        }
 
         MudDialog.Close(DialogResult.Ok(newRouter));
     }

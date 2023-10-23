@@ -2,16 +2,19 @@
 @using MudBlazor;
 @using Project_RMT.Core;
 @using Project_RMT.Interfaces;
+@using Project_RMT.Models;
 @using Router = Project_RMT.Models.Router;
 @using System.Drawing;
 @inject SimulationEngine SimulationEngine
 @inject IDialogService DialogService
 <style>
     .grid{
-        grid-gap: 5px;
+        display: grid;
         justify-items: stretch;
-        height: 50vw;
-        width: 50vw;
+        height: 80vw;
+        width: 80vw;
+        grid-template-columns: repeat(20, 1fr);
+        grid-template-rows: repeat(20, 1fr);
     }
     .grid-cell{
         border: solid grey 1px;
@@ -26,8 +29,8 @@
 
 <h1>Simulation Page</h1>
 
+<MudButton @onclick="() => InvokeModal()" Color="MudBlazor.Color.Surface" FullWidth=true >New Router</MudButton>
 <MudGrid Class="grid">
-    <MudButton @onclick="() => InvokeModal()" FullWidth=true >New Router</MudButton>
     @for (int row = 0; row < 20; row++)
     {
         @for (int col = 0; col < 20; col++)
@@ -39,8 +42,7 @@
 </MudGrid>
 
 
-    @code {
-    public List<Router> routers = new List<Router>();
+@code {
     public string buttonText = "Simulation Starten";
     short networkDeviceCounter = 1;
 
@@ -51,8 +53,17 @@
 
     private async Task InvokeModal()
     {
-        var parameters = new DialogParameters<Point>();
-        parameters.Add("NetworkInterfaces", routers);
+        var routerlist = new List<Router>();
+        foreach (var item in SimulationEngine.Devices)
+        {
+            if (item is Router rudi)
+            {
+                routerlist.Add(rudi);
+            }
+        };
+
+        var parameters = new DialogParameters<Router>();
+        parameters.Add("NetworkInterfaces", routerlist);
         var options = new DialogOptions { CloseButton = true, ClassBackground = "modal" };
         var dialog = DialogService.Show<AddRouterModal>("AddRouter", parameters, options);
         var result = await dialog.Result;
@@ -61,7 +72,6 @@
         {
             if (result.Data is Router newRouter)
             {
-                routers.Add(newRouter);
                 SimulationEngine.Devices.Add(newRouter);
             } 
         }
