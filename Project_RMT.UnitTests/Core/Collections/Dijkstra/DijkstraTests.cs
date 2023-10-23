@@ -1,7 +1,5 @@
 ﻿using Project_RMT.Collections;
 using Project_RMT.Core;
-using Project_RMT.Interfaces;
-using Project_RMT.Models;
 using Project_RMT.UnitTests.Common;
 
 namespace Project_RMT.UnitTests.Collections.Dijkstra
@@ -46,7 +44,7 @@ namespace Project_RMT.UnitTests.Collections.Dijkstra
             var countBeforeRouter1 = router1.RoutingTable.Count;
             var countBeforeRouter3 = router3.RoutingTable.Count;
 
-            Assert.DoesNotContain(router1.RoutingTable, re => re.TargetIPAdress == client2.IPAdress);
+            Assert.DoesNotContain(router1.RoutingTable, re => re.TargetIPAdress.Equals(client2.IPAdress));
 
             var testOSPFAlgo = new OspfAlgorithm();
             testOSPFAlgo.UpdateRoutingTables(ref preparedNetworkStructure.routerList);
@@ -56,13 +54,13 @@ namespace Project_RMT.UnitTests.Collections.Dijkstra
 
             Assert.True(countBeforeRouter1 < countAfterRouter1);
             Assert.True(countBeforeRouter3 < countAfterRouter3);
-            Assert.Contains(router1.RoutingTable, re => re.TargetIPAdress == client2.IPAdress);
-            Assert.True(router1.RoutingTable.Single(re => re.TargetIPAdress == client2.IPAdress).Metric == 17);
+            Assert.Contains(router1.RoutingTable, re => re.TargetIPAdress.Equals(client2.IPAdress));
+            Assert.True(router1.RoutingTable.Single(re => re.TargetIPAdress.Equals(client2.IPAdress)).Metric == 17);
 
-            Assert.Contains(router3.RoutingTable, re => re.TargetIPAdress == client1.IPAdress);
-            Assert.Contains(router3.RoutingTable, re => re.TargetIPAdress == client2.IPAdress);
-            Assert.True(router3.RoutingTable.Single(re => re.TargetIPAdress == client1.IPAdress).Metric == 7);
-            Assert.True(router3.RoutingTable.Single(re => re.TargetIPAdress == client2.IPAdress).Metric == 12);
+            Assert.Contains(router3.RoutingTable, re => re.TargetIPAdress.Equals(client1.IPAdress));
+            Assert.Contains(router3.RoutingTable, re => re.TargetIPAdress.Equals(client2.IPAdress));
+            Assert.True(router3.RoutingTable.Single(re => re.TargetIPAdress.Equals(client1.IPAdress)).Metric == 7);
+            Assert.True(router3.RoutingTable.Single(re => re.TargetIPAdress.Equals(client2.IPAdress)).Metric == 12);
         }
     }
 }

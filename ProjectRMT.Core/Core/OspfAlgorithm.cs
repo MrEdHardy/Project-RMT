@@ -54,7 +54,7 @@ namespace Project_RMT.Core
                     {
                         if (path.TargetNode.Value.Id != router.Id 
                             && !router.NetworkInterfaces.Any(c => c.ConnectedNetworkDevice?.Id == path.TargetNode.Value.Id) 
-                            && !router.RoutingTable.Any(re => re.TargetIPAdress == path.TargetNode.Value.IPAdress))
+                            && !router.RoutingTable.Any(re => re.TargetIPAdress.Equals(path.TargetNode.Value.IPAdress)))
                         {
                             var nextHop = path.Path.ElementAt(path.Path.FindIndex(n => n.Value.Id == router.Id) + 1);
                             router.RoutingTable.Add(new RoutingEntry 
