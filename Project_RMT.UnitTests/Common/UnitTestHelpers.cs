@@ -116,143 +116,89 @@ namespace Project_RMT.UnitTests.Common
             router3.NetworkInterfaces.Add(router3Router1Connection);
             router3.NetworkInterfaces.Add(router3Router2Connection);
             
-            if (generateMetric) 
+            router1.RoutingTable.Add(new RoutingEntry
             {
-                router1.RoutingTable.Add(new RoutingEntry
-                {
-                    NetworkInterface = router1Client1Connection,
-                    TargetIPAdress = client1.IPAdress,
-                    Metric = 20,
-                    IsActive = true
-                });
+                NetworkInterface = router1Client1Connection,
+                TargetIPAdress = client1.IPAdress,
+                Metric = 20,
+                IsActive = true
+            });
 
-                router1.RoutingTable.Add(new RoutingEntry
-                {
-                    NetworkInterface = router1Router2Connection,
-                    TargetIPAdress = router2.IPAdress,
-                    Metric = 10,
-                    IsActive = true
-                });
-                router1.RoutingTable.Add(new RoutingEntry
-                {
-                    NetworkInterface = router1Router3Connection,
-                    TargetIPAdress = router3.IPAdress,
-                    Metric = 5,
-                    IsActive = true
-                });
-
-                router2.RoutingTable.Add(new RoutingEntry
-                {
-                    NetworkInterface = router2Router1Connection,
-                    TargetIPAdress = router1.IPAdress,
-                    Metric = 10,
-                    IsActive = true
-                });
-                router2.RoutingTable.Add(new RoutingEntry
-                {
-                    NetworkInterface = router2Client2Connection,
-                    TargetIPAdress = client2.IPAdress,
-                    Metric = 10,
-                    IsActive = true
-                });
-                router2.RoutingTable.Add(new RoutingEntry
-                {
-                    NetworkInterface = router2Router3Connection,
-                    TargetIPAdress = router3.IPAdress,
-                    Metric = 2,
-                    IsActive = true
-                });
-                router2.RoutingTable.Add(new RoutingEntry
-                {
-                    NetworkInterface = router2Client1Connection,
-                    TargetIPAdress = client1.IPAdress,
-                    Metric = 5,
-                    IsActive = true
-                });
-
-                router3.RoutingTable.Add(new RoutingEntry
-                {
-                    NetworkInterface = router3Router1Connection,
-                    TargetIPAdress = router1.IPAdress,
-                    Metric = 5,
-                    IsActive = true
-                });
-                router3.RoutingTable.Add(new RoutingEntry
-                {
-                    NetworkInterface = router3Router2Connection,
-                    TargetIPAdress = router2.IPAdress,
-                    Metric = 2,
-                    IsActive = true
-                });
-            }
-            else 
+            router1.RoutingTable.Add(new RoutingEntry
             {
-                router1.RoutingTable.Add(new RoutingEntry
-                {
-                    NetworkInterface = router1Client1Connection,
-                    TargetIPAdress = client1.IPAdress,
-                    Metric = 0,
-                    IsActive = true
-                });
+                NetworkInterface = router1Router2Connection,
+                TargetIPAdress = router2.IPAdress,
+                Metric = 10,
+                IsActive = true
+            });
+            router1.RoutingTable.Add(new RoutingEntry
+            {
+                NetworkInterface = router1Router3Connection,
+                TargetIPAdress = router3.IPAdress,
+                Metric = 5,
+                IsActive = true
+            });
 
-                router1.RoutingTable.Add(new RoutingEntry
-                {
-                    NetworkInterface = router1Router2Connection,
-                    TargetIPAdress = router2.IPAdress,
-                    Metric = 0,
-                    IsActive = true
-                });
-                router1.RoutingTable.Add(new RoutingEntry
-                {
-                    NetworkInterface = router1Router3Connection,
-                    TargetIPAdress = router3.IPAdress,
-                    Metric = 0,
-                    IsActive = true
-                });
+            router2.RoutingTable.Add(new RoutingEntry
+            {
+                NetworkInterface = router2Router1Connection,
+                TargetIPAdress = router1.IPAdress,
+                Metric = 10,
+                IsActive = true
+            });
+            router2.RoutingTable.Add(new RoutingEntry
+            {
+                NetworkInterface = router2Client2Connection,
+                TargetIPAdress = client2.IPAdress,
+                Metric = 10,
+                IsActive = true
+            });
+            router2.RoutingTable.Add(new RoutingEntry
+            {
+                NetworkInterface = router2Router3Connection,
+                TargetIPAdress = router3.IPAdress,
+                Metric = 2,
+                IsActive = true
+            });
+            router2.RoutingTable.Add(new RoutingEntry
+            {
+                NetworkInterface = router2Client1Connection,
+                TargetIPAdress = client1.IPAdress,
+                Metric = 5,
+                IsActive = true
+            });
 
-                router2.RoutingTable.Add(new RoutingEntry
-                {
-                    NetworkInterface = router2Router1Connection,
-                    TargetIPAdress = router1.IPAdress,
-                    Metric = 0,
-                    IsActive = true
-                });
-                router2.RoutingTable.Add(new RoutingEntry
-                {
-                    NetworkInterface = router2Client2Connection,
-                    TargetIPAdress = client2.IPAdress,
-                    Metric = 0,
-                    IsActive = true
-                });
-                router2.RoutingTable.Add(new RoutingEntry
-                {
-                    NetworkInterface = router2Router3Connection,
-                    TargetIPAdress = router3.IPAdress,
-                    Metric = 0,
-                    IsActive = true
-                });
-                router2.RoutingTable.Add(new RoutingEntry
-                {
-                    NetworkInterface = router2Client1Connection,
-                    TargetIPAdress = client1.IPAdress,
-                    Metric = 0,
-                    IsActive = true
-                });
+            router3.RoutingTable.Add(new RoutingEntry
+            {
+                NetworkInterface = router3Router1Connection,
+                TargetIPAdress = router1.IPAdress,
+                Metric = 5,
+                IsActive = true
+            });
+            router3.RoutingTable.Add(new RoutingEntry
+            {
+                NetworkInterface = router3Router2Connection,
+                TargetIPAdress = router2.IPAdress,
+                Metric = 2,
+                IsActive = true
+            });
 
-                router3.RoutingTable.Add(new RoutingEntry
+            if (!generateMetric) 
+            {
+                foreach (var routingEntry in router1.RoutingTable)
                 {
-                    NetworkInterface = router3Router1Connection,
-                    TargetIPAdress = router1.IPAdress,
-                    Metric = 0,
-                    IsActive = true
-                });
-                router3.RoutingTable.Add(new RoutingEntry
+                    routingEntry.Metric = 0;
+                }
+                
+                foreach (var routingEntry in router2.RoutingTable)
                 {
-                    NetworkInterface = router3Router2Connection,
-                    TargetIPAdress = router2.IPAdress,
-                    Metric = 0,
-                    IsActive = true
-                });
+                    routingEntry.Metric = 0;
+                }
+                
+                foreach (var routingEntry in router3.RoutingTable)
+                {
+                    routingEntry.Metric = 0;
+                }
             }
 
             ICollection<Router> routerList = new List<Router>();

@@ -8,7 +8,7 @@ namespace Project_RMT.UnitTests.Core.Rip
         [Fact]
         public void ShouldGenerateUpdatedRoutingTable()
         {
-            var preparedNetworkStructure = UnitTestHelpers.PrepareBaseNetworkstructure(false);
+            var preparedNetworkStructure = UnitTestHelpers.PrepareBaseNetworkstructure();
 
             var router1 = preparedNetworkStructure.routerList.First();
             var router3 = preparedNetworkStructure.routerList.Last();

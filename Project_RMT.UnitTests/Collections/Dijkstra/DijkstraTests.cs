@@ -36,7 +36,7 @@ namespace Project_RMT.UnitTests.Collections.Dijkstra
         [Fact]
         public void ShouldTestIfOspfUpdatesRoutingTablesAccordingly()
         {
-            var preparedNetworkStructure = UnitTestHelpers.PrepareBaseNetworkstructure(true);
+            var preparedNetworkStructure = UnitTestHelpers.PrepareBaseNetworkstructure(generateMetric: true);
 
             var router1 = preparedNetworkStructure.routerList.First();
             var router3 = preparedNetworkStructure.routerList.Last();
@@ -57,8 +57,12 @@ namespace Project_RMT.UnitTests.Collections.Dijkstra
             Assert.True(countBeforeRouter1 < countAfterRouter1);
             Assert.True(countBeforeRouter3 < countAfterRouter3);
             Assert.Contains(router1.RoutingTable, re => re.TargetIPAdress == client2.IPAdress);
+            Assert.True(router1.RoutingTable.Single(re => re.TargetIPAdress == client2.IPAdress).Metric == 17);
+
             Assert.Contains(router3.RoutingTable, re => re.TargetIPAdress == client1.IPAdress);
             Assert.Contains(router3.RoutingTable, re => re.TargetIPAdress == client2.IPAdress);
+            Assert.True(router3.RoutingTable.Single(re => re.TargetIPAdress == client1.IPAdress).Metric == 7);
+            Assert.True(router3.RoutingTable.Single(re => re.TargetIPAdress == client2.IPAdress).Metric == 12);
         }
     }
 }
