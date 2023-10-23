@@ -44,21 +44,6 @@
     public string buttonText = "Simulation Starten";
     short networkDeviceCounter = 1;
 
-    protected override Task OnInitializedAsync()
-    {
-        routers.Add(new Router()
-        {
-            Id = networkDeviceCounter,
-            Clients = new(),
-            IPAdress = new (2346786823),
-            NetworkInterfaces = new(),
-            RoutingTable = new()
-        });
-        networkDeviceCounter++;
-
-        return Task.CompletedTask;
-    }
-
     private void StartRouting()
     {
         SimulationEngine.UpdateRoutingtables();
