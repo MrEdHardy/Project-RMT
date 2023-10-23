@@ -5,7 +5,7 @@ namespace Project_RMT.Core
 {
     public class RipAlgorithm : IRoutingAlgorithm
     {
-        public void UpdateRoutingTables(ref IEnumerable<Router> routers)
+        public void UpdateRoutingTables(ref ICollection<Router> routers)
         {
             foreach (var router in routers)
             {
@@ -24,7 +24,7 @@ namespace Project_RMT.Core
                                     TargetIPAdress = incomingEntry.TargetIPAdress,
                                     NextHop = router.IPAdress,
                                     Metric = incomingEntry.Metric + 1,
-                                    NetworkInterface = connectedRouter.NetworkInterfaces.First(r => r.ConnectedNetworkDevice?.IPAdress == router.IPAdress),
+                                    NetworkInterface = connectedRouter.NetworkInterfaces.First(r => r.ConnectedNetworkDevice?.Id == router.Id),
                                 });
                             }
                             else
@@ -34,7 +34,7 @@ namespace Project_RMT.Core
                                     existingEntry.NextHop = router.IPAdress;
                                     existingEntry.Metric = incomingEntry.Metric + 1;
                                     existingEntry.TargetIPAdress = router.IPAdress;
-                                    existingEntry.NetworkInterface = connectedRouter.NetworkInterfaces.First(r => r.ConnectedNetworkDevice?.IPAdress == router.IPAdress);
+                                    existingEntry.NetworkInterface = connectedRouter.NetworkInterfaces.First(r => r.ConnectedNetworkDevice?.Id == router.Id);
                                 }
                             }
                         }

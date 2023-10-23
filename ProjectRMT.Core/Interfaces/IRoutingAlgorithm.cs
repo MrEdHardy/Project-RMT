@@ -4,6 +4,6 @@ namespace Project_RMT.Interfaces
 {
     public interface IRoutingAlgorithm
     {
-        void UpdateRoutingTables(ref IEnumerable<Router> routers);
+        void UpdateRoutingTables(ref ICollection<Router> routers);
     }
 }

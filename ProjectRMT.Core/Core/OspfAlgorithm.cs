@@ -9,7 +9,7 @@ namespace Project_RMT.Core
         public bool GraphInitialized = false;
         private Graph<INetworkDevice>? networkgraph;
 
-        public void UpdateRoutingTables(ref IEnumerable<Router> routers)
+        public void UpdateRoutingTables(ref ICollection<Router> routers)
         {
             if (!this.GraphInitialized)
             {
