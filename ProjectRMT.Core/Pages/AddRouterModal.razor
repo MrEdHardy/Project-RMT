@@ -4,6 +4,8 @@
 @using Project_RMT.Models;
 @using Router = Project_RMT.Models.Router;
 @using System.Net;
+@using Microsoft.AspNetCore.Components
+@using System.Globalization;
 
 <MudForm @ref="form">
     <MudDialog>
@@ -18,15 +20,22 @@
                 <MudItem xs="12" md="6">
                     <MudTextField Style="background-color: grey;" T="int" Label="Y-Coordinates" @ref="ycoordinateField"/>
                 </MudItem>
-                @if (NetworkInterfaces is not null && NetworkInterfaces.Count != 0)
-                {
-                    <MudSelect T="Router" Label="NetworkInterfaces" MultiSelection="true" @bind-SelectedValues="options">
-                        @foreach (var networkInterface in NetworkInterfaces)
+                <MudItem xs="12" md="12">
+                    @if (NetworkInterfaces is not null && NetworkInterfaces.Count != 0)
+                    {
+                        <select multiple>
+                            @foreach (var item in NetworkInterfaces)
+                            {
+                                <option value="@item" @onclick=@((e) => OptionClickEvent(@item,e))>@item.IPAdress.ToString()</option>
+                            }
+                        </select>
+
+                        @foreach (var holderItem in options)
                         {
-                            <MudSelectItem Value="@networkInterface">@networkInterface.Id.ToString()</MudSelectItem>
+                            @holderItem
                         }
-                    </MudSelect>
-                }
+                    }
+                </MudItem>
             </MudGrid>
             <MudButton @onclick="save" Variant="Variant.Filled" Color="MudBlazor.Color.Primary" Class="ml-auto">Register</MudButton>
         </DialogContent>
@@ -40,7 +49,8 @@
     MudTextField<int> xcoordinateField;
     MudTextField<int> ycoordinateField;
     MudForm form;
-    private IEnumerable<Router> options { get; set; } = new HashSet<Router>();
+    private HashSet<Router> options { get; set; } = new HashSet<Router>();
+    private Router value { get; set; }
 
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
@@ -68,4 +78,10 @@
 
         MudDialog.Close(DialogResult.Ok(newRouter));
     }
+
+    public void OptionClickEvent(Router value, MouseEventArgs evnt)
+    {
+            options.Add(value);
+    }
+
 }
