@@ -36,7 +36,7 @@
         if (router is Router item)
         {
             <div class="grid-cell" style="grid-column: @item.Coordinates.Value.Y; grid-row: @item.Coordinates.Value.X;">
-                <MudButton Size="Size.Large" StartIcon="@Icons.Material.Filled.Router"></MudButton>
+                <MudButton @onclick="() => InvokeShowRouterModal(item)" Size="Size.Large" StartIcon="@Icons.Material.Filled.Router"></MudButton>
             </div>
         }
     }
@@ -55,6 +55,13 @@
     private void StartRouting()
     {
         SimulationEngine.UpdateRoutingtables();
+    }
+    private async Task InvokeShowRouterModal(Router router)
+    {
+        var parameters = new DialogParameters<Router>();
+        parameters.Add("Router", router);
+        var options = new DialogOptions { CloseButton = true, ClassBackground = "modal" };
+        var dialog = DialogService.Show<ShowRouterModal>("ShowRouter", parameters, options);
     }
 
     private async Task InvokeAddRouterModal()
