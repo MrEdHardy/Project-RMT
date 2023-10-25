@@ -28,7 +28,7 @@
 
 <h1>Simulation Page</h1>
 
-<MudButton @onclick="() => InvokeModal()" Color="MudBlazor.Color.Surface" FullWidth=true Style="margin: 10px;" >New Router</MudButton>
+<MudButton @onclick="() => InvokeAddRouterModal()" Color="MudBlazor.Color.Surface" FullWidth=true Style="margin: 10px;" >New Router</MudButton>
 <MudButton @onclick="() => StartRouting()" Color="MudBlazor.Color.Surface" FullWidth=true Style="margin: 10px;">Start Routing</MudButton>
 <MudGrid Class="grid">
     @foreach (var router in SimulationEngine.Devices)
@@ -57,7 +57,7 @@
         SimulationEngine.UpdateRoutingtables();
     }
 
-    private async Task InvokeModal()
+    private async Task InvokeAddRouterModal()
     {
         var routerlist = new List<Router>();
         foreach (var item in SimulationEngine.Devices)
