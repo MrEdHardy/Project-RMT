@@ -15,26 +15,34 @@ namespace Project_RMT.Core
                     {
                         foreach (var incomingEntry in router.RoutingTable)
                         {
-                            var existingEntry = connectedRouter.RoutingTable.FirstOrDefault(e => e.TargetIPAdress == incomingEntry.TargetIPAdress);
+                            // Prüfen, ob der Eintrag des empfangenen Routers er selbst ist
+                            if (incomingEntry.TargetIPAdress.Equals(connectedRouter.IPAdress)) continue;
 
-                            if (existingEntry == null)
+                            var existingEntry = connectedRouter.RoutingTable
+                                .FirstOrDefault(e => e.TargetIPAdress.Equals(incomingEntry.TargetIPAdress));
+
+                            // Sollten theoretisch die Kosten zwischen benachbarten Routern nicht 1 betragen?
+                            int newMetric = incomingEntry.Metric + 1;
+
+                            if (existingEntry == null || newMetric < existingEntry.Metric)
                             {
-                                connectedRouter.RoutingTable.Add(new RoutingEntry
+                                if (existingEntry == null)
                                 {
-                                    TargetIPAdress = incomingEntry.TargetIPAdress,
-                                    NextHop = router.IPAdress,
-                                    Metric = incomingEntry.Metric + 1,
-                                    NetworkInterface = connectedRouter.NetworkInterfaces.First(r => r.ConnectedNetworkDevice?.Id == router.Id),
-                                });
-                            }
-                            else
-                            {
-                                if (incomingEntry.Metric + 1 < existingEntry.Metric)
+                                    connectedRouter.RoutingTable.Add(new RoutingEntry
+                                    {
+                                        TargetIPAdress = incomingEntry.TargetIPAdress,
+                                        NextHop = router.IPAdress,
+                                        NetworkInterface = incomingEntry.NetworkInterface,
+                                        Metric = newMetric,
+                                        IsActive = true
+                                    });
+                                }
+                                else
                                 {
                                     existingEntry.NextHop = router.IPAdress;
-                                    existingEntry.Metric = incomingEntry.Metric + 1;
-                                    existingEntry.TargetIPAdress = router.IPAdress;
-                                    existingEntry.NetworkInterface = connectedRouter.NetworkInterfaces.First(r => r.ConnectedNetworkDevice?.Id == router.Id);
+                                    existingEntry.NetworkInterface = incomingEntry.NetworkInterface;
+                                    existingEntry.Metric = newMetric;
+                                    existingEntry.IsActive = true;
                                 }
                             }
                         }

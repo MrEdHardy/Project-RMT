@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project_RMT", "Project_RMT.csproj", "{073FB26F-1E3D-4F88-9280-EBAEF3879C5D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project_RMT.UnitTests", "..\Project_RMT.UnitTests\Project_RMT.UnitTests.csproj", "{F635CD6B-52B8-4096-A924-B5C3DFB54EE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectRMT.UnitTests", "..\Project_RMT.UnitTests\ProjectRMT.UnitTests.csproj", "{F635CD6B-52B8-4096-A924-B5C3DFB54EE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
