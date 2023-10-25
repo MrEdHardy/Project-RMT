@@ -4,7 +4,6 @@
 @using Project_RMT.Interfaces;
 @using Project_RMT.Models;
 @using Router = Project_RMT.Models.Router;
-@using System.Drawing;
 @inject SimulationEngine SimulationEngine
 @inject IDialogService DialogService
 <style>
@@ -29,15 +28,22 @@
 
 <h1>Simulation Page</h1>
 
-<MudButton @onclick="() => InvokeModal()" Color="MudBlazor.Color.Surface" FullWidth=true >New Router</MudButton>
+<MudButton @onclick="() => InvokeModal()" Color="MudBlazor.Color.Surface" FullWidth=true Style="margin: 10px;" >New Router</MudButton>
+<MudButton @onclick="() => StartRouting()" Color="MudBlazor.Color.Surface" FullWidth=true Style="margin: 10px;">Start Routing</MudButton>
 <MudGrid Class="grid">
-    @for (int row = 0; row < 20; row++)
+    @foreach (var router in SimulationEngine.Devices)
     {
-        @for (int col = 0; col < 20; col++)
+        if (router is Router item)
         {
-            <MudItem Class="grid-cell">
-            </MudItem>
+            <div class="grid-cell" style="grid-column: @item.Coordinates.Value.Y; grid-row: @item.Coordinates.Value.X;">
+                <MudButton Size="Size.Large" StartIcon="@Icons.Material.Filled.Router"></MudButton>
+            </div>
         }
+    }
+    @for (int i = SimulationEngine.Devices.Count; i <= 400; i++)
+    {
+        <MudItem Class="grid-cell">
+        </MudItem>
     }
 </MudGrid>
 
@@ -64,7 +70,7 @@
 
         var parameters = new DialogParameters<Router>();
         parameters.Add("NetworkInterfaces", routerlist);
-        var options = new DialogOptions { CloseButton = true, ClassBackground = "modal" };
+        var options = new DialogOptions { CloseButton = true, ClassBackground = "modal"};
         var dialog = DialogService.Show<AddRouterModal>("AddRouter", parameters, options);
         var result = await dialog.Result;
 

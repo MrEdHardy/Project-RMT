@@ -42,5 +42,10 @@ namespace Project_RMT.Core
                 }
             }
         }
+
+        public void UpdateRoutingTables(ref IEnumerable<Router> routers)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

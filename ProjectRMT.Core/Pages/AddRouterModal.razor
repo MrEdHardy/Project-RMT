@@ -10,20 +10,20 @@
         <DialogContent>
             <MudGrid>
                 <MudItem xs="12" md="12">
-                    <MudTextField T="string" Label="IPadress" @ref="ipField" />
+                    <MudTextField Style="background-color: grey;" T="string" Label="IPadress" @ref="ipField" />
                 </MudItem>
                 <MudItem xs="12" md="6">
-                    <MudTextField T="int" Label="X-Coordinates" @ref="xcoordinateField"/>
+                    <MudTextField Style="background-color: grey;" T="int" Label="X-Coordinates" @ref="xcoordinateField"/>
                 </MudItem>
                 <MudItem xs="12" md="6">
-                    <MudTextField T="int" Label="Y-Coordinates" @ref="ycoordinateField"/>
+                    <MudTextField Style="background-color: grey;" T="int" Label="Y-Coordinates" @ref="ycoordinateField"/>
                 </MudItem>
                 @if (NetworkInterfaces is not null && NetworkInterfaces.Count != 0)
                 {
                     <MudSelect T="Router" Label="NetworkInterfaces" MultiSelection="true" @bind-SelectedValues="options">
                         @foreach (var networkInterface in NetworkInterfaces)
                         {
-                            <MudSelectItem Value="@networkInterface">@networkInterface.IPAdress.ToString()</MudSelectItem>
+                            <MudSelectItem Value="@networkInterface">@networkInterface.Id.ToString()</MudSelectItem>
                         }
                     </MudSelect>
                 }
