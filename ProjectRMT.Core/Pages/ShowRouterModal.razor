@@ -1,5 +1,56 @@
-﻿<h3>ShowRouterModal</h3>
+﻿@using Router = Project_RMT.Models.Router;
+
+<MudForm>
+    <MudDialog>
+        <DialogContent>
+            <MudGrid>
+                <MudItem xs="12" md="12">
+                    <MudText><strong>IP Address:</strong>@router.IPAdress</MudText
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <strong>Network Interfaces:</strong>
+                        <ul>
+                            @foreach (var networkInterface in router.NetworkInterfaces)
+                            {
+                                <li>@networkInterface</li>
+                            }
+                        </ul>
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <strong>Clients:</strong>
+                        <ul>
+                            @foreach (var client in router.Clients)
+                            {
+                                <li>@client</li>
+                            }
+                        </ul>
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <strong>Routing Table:</strong>
+                        <ul>
+                            @foreach (var routingEntry in router.RoutingTable)
+                            {
+                                <li>
+                                    <strong>Target IP Address:</strong> @routingEntry.TargetIPAdress<br />
+                                    <strong>Next Hop:</strong> @routingEntry.NextHop<br />
+                                    <strong>Network Interface:</strong> @routingEntry.NetworkInterface<br />
+                                    <strong>Metric:</strong> @routingEntry.Metric<br />
+                                    <strong>Is Active:</strong> @routingEntry.IsActive
+                                </li>
+                            }
+                        </ul>
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <MudText><strong>ID:</strong> @router.Id</MudText>
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <MudText><strong>Coordinates:</strong> @router.Coordinates</MudText>
+                </MudItem>
+            </MudGrid>
+        </DialogContent>
+    </MudDialog>
+</MudForm>
 
 @code {
-
+    [Parameter] public Router router { get; set; }
 }
