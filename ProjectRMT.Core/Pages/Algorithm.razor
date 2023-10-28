@@ -59,7 +59,7 @@
     private async Task InvokeShowRouterModal(Router router)
     {
         var parameters = new DialogParameters<Router>();
-        parameters.Add("Router", router);
+        parameters.Add("router", router);
         var options = new DialogOptions { CloseButton = true, ClassBackground = "modal" };
         var dialog = DialogService.Show<ShowRouterModal>("ShowRouter", parameters, options);
     }
