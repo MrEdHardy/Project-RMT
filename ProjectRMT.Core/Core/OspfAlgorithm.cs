@@ -52,19 +52,32 @@ namespace Project_RMT.Core
 
                     foreach (var path in shortestPaths)
                     {
-                        if (path.TargetNode.Value.Id != router.Id 
-                            && !router.NetworkInterfaces.Any(c => c.ConnectedNetworkDevice?.Id == path.TargetNode.Value.Id) 
-                            && !router.RoutingTable.Any(re => re.TargetIPAdress.Equals(path.TargetNode.Value.IPAdress)))
+                        if (path.TargetNode.Value.Id != router.Id)
                         {
                             var nextHop = path.Path.ElementAt(path.Path.FindIndex(n => n.Value.Id == router.Id) + 1);
-                            router.RoutingTable.Add(new RoutingEntry 
-                            { 
-                                Metric = path.TotalCost,
-                                TargetIPAdress = path.TargetNode.Value.IPAdress,
-                                NetworkInterface = router.NetworkInterfaces.Single(n => n.ConnectedNetworkDevice?.Id == nextHop.Value.Id),
-                                NextHop = nextHop.Value.IPAdress,
-                                IsActive = true,
-                            });
+                            var networkInterface = router.NetworkInterfaces.Single(n => n.ConnectedNetworkDevice?.Id == nextHop.Value.Id);
+
+                            if (router.RoutingTable.SingleOrDefault(re => re.TargetIPAdress.Equals(path.TargetNode.Value.IPAdress)) is RoutingEntry routingEntry)
+                            {
+                                if (path.TotalCost < routingEntry.Metric)
+                                {
+                                    routingEntry.NextHop = nextHop.Value.IPAdress;
+                                    routingEntry.NetworkInterface = networkInterface;
+                                    routingEntry.Metric = path.TotalCost;
+                                    routingEntry.IsActive = true;
+                                }
+                            }
+                            else
+                            {
+                                router.RoutingTable.Add(new RoutingEntry 
+                                { 
+                                    Metric = path.TotalCost,
+                                    TargetIPAdress = path.TargetNode.Value.IPAdress,
+                                    NetworkInterface = networkInterface,
+                                    NextHop = nextHop.Value.IPAdress,
+                                    IsActive = true,
+                                });
+                            }
                         }
                     }
                 }
